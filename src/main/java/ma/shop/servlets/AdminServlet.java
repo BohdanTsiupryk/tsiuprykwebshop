@@ -24,7 +24,7 @@ public class AdminServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<User> users = userDao.getUsers();
-
+        users.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
         request.setAttribute("users", users);
         request.getRequestDispatcher("userControl.jsp").forward(request, response);
     }

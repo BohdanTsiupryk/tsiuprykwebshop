@@ -22,7 +22,7 @@
 </div>
 <div align="center">
   <c:if test="${badPass}">
-    <b style="color:red">Bad login/password try again or <a href="/registration.jsp">SignUp</a></b> <br><br>
+    <b style="color:red">Bad password try again or <a href="/registration.jsp">SignUp</a></b> <br><br>
   </c:if>
   ${successReg}<br>
   Please enter your: <br>

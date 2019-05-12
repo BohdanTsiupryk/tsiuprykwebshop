@@ -7,7 +7,7 @@ import ma.shop.database.dao.UserDao;
 import ma.shop.database.model.Good;
 import ma.shop.database.model.User;
 import ma.shop.service.MailService;
-import ma.shop.utils.RandomCodeGenerator;
+import ma.shop.utils.RandomGenerator;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -46,7 +46,7 @@ public class PurchaseServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String code = RandomCodeGenerator.randomCode();
+        String code = RandomGenerator.randomCode();
         User user = (User) request.getSession().getAttribute("currentUser");
 
         Optional<Good> goodById = goodsDao.getGoodById(Long.parseLong(request.getParameter("buyId")));

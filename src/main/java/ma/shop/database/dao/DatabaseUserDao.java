@@ -4,6 +4,7 @@ import ma.shop.database.connector.DbConnector;
 import ma.shop.database.model.Good;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
+import ma.shop.utils.SHA512SecureUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -22,7 +23,7 @@ public class DatabaseUserDao implements UserDao {
 
     @Override
     public boolean addUser(User user) {
-        String addSql = "INSERT INTO users (email,password,address,role) VALUES (?,?,?,?)";
+        String addSql = "INSERT INTO users (email,password,address,role, salt) VALUES (?,?,?,?,?)";
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement statementAdd = connection.prepareStatement(addSql)) {
 
@@ -30,8 +31,9 @@ public class DatabaseUserDao implements UserDao {
             log.debug("Try add user with email-" + user.getEmail());
 
             statementAdd.setString(1, user.getEmail());
-            statementAdd.setString(2, user.getPassword());
+            statementAdd.setString(2, SHA512SecureUtil.getSecurePassword(user.getPassword(), user.getSalt()));
             statementAdd.setString(3, user.getAddress());
+            statementAdd.setString(5, user.getSalt());
             statementAdd.setInt(4, user.getRole().getId());
 
             if (statementAdd.execute()) {
@@ -75,7 +77,7 @@ public class DatabaseUserDao implements UserDao {
 
     @Override
     public Optional<User> getUserById(long id) {
-        String getOneSql = "SELECT users.id,email,password,address,good,role_name FROM users " +
+        String getOneSql = "SELECT users.id,email,password,address,good,role_name,salt FROM users " +
                 sqlInnerRole + "WHERE users.id = " + id;
 
         try (Connection connection = DbConnector.getConnection();
@@ -138,14 +140,13 @@ public class DatabaseUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> containce(String email, String pass) {
-        String containceSql = "SELECT users.id,email,password,address,good,role_name FROM users " + sqlInnerRole + " WHERE email = ? AND password = ?";
+    public Optional<User> containce(String email) {
+        String containceSql = "SELECT users.id,email,password,address,good,role_name,salt FROM users " + sqlInnerRole + " WHERE email = ?";
 
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(containceSql)) {
 
             preparedStatement.setString(1, email);
-            preparedStatement.setString(2, pass);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             log.debug("Check user with email-" + email);
@@ -166,10 +167,11 @@ public class DatabaseUserDao implements UserDao {
         String resEmail = resultSet.getString("email");
         String resAddress = resultSet.getString("address");
         String resPassword = resultSet.getString("password");
+        String resSalt = resultSet.getString("salt");
         int good = resultSet.getInt("good");
         Role resRole = Role.valueOf(resultSet.getString("role_name"));
 
-        return Optional.of(new User(resId, resEmail, resPassword, resAddress, good, resRole));
+        return Optional.of(new User(resId, resEmail, resPassword, resAddress, good, resRole, resSalt));
     }
 
     @Override
