@@ -19,7 +19,6 @@ public class RegistrationServlet extends HttpServlet {
     private UserDao userDao = new DatabaseUserDao();
     private static final Logger log = Logger.getLogger(RegistrationServlet.class);
 
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -36,15 +35,14 @@ public class RegistrationServlet extends HttpServlet {
             request.getRequestDispatcher("registration.jsp").forward(request, response);
         } else {
             log.info("Try register user with email: " + email);
-
             try {
+
                 userDao.addUser(new User(email, password, address, Role.USER));
             } catch (NoSuchUserIdException e) {
                 log.info("Try register user with email: " + email);
                 request.setAttribute("message", "This login already exist");
                 request.getRequestDispatcher("info/information.jsp").forward(request, response);
             }
-
             log.info("Success register user with email: " + email);
             request.setAttribute("successReg", "You successfully register");
             request.getRequestDispatcher("index.jsp").forward(request, response);

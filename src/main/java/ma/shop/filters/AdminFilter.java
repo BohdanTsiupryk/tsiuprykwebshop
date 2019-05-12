@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(value = {"/addGood","/userControl","/deleteGood","/delete","/editGood","/goodsControl"})
+@WebFilter(value = {"/addGood", "/userControl", "/deleteGood", "/delete", "/editGood", "/goodsControl"})
 public class AdminFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -28,7 +28,7 @@ public class AdminFilter implements Filter {
         if (user != null && user.getRole().equals(Role.ADMIN)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            servletRequest.getRequestDispatcher("info/accessDenied.jsp").forward(servletRequest, servletResponse);
+            servletRequest.getRequestDispatcher("accessDenied.jsp").forward(servletRequest, servletResponse);
         }
     }
 

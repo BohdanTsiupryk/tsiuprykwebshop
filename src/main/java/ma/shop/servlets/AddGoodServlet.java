@@ -3,7 +3,6 @@ package ma.shop.servlets;
 import ma.shop.database.dao.DatabaseGoodDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
-import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
