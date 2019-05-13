@@ -28,19 +28,26 @@ public class LoginServlet extends HttpServlet {
 
         if (optionalUser.isPresent()) {
             User userFromDb = optionalUser.get();
-            if (SHA512SecureUtil.getSecurePassword(pass, userFromDb.getSalt()).equals(userFromDb.getPassword())) {
-                request.getSession().setAttribute("currentUser", userFromDb);
-                if (userFromDb.getRole().equals(Role.USER)) {
-                    request.getRequestDispatcher("/goods").forward(request, response);
-                    return;
-                } else if (userFromDb.getRole().equals(Role.ADMIN)) {
-                    request.getRequestDispatcher("/userControl").forward(request, response);
-                    return;
-                }
+            if (choosePath(request, response, pass, userFromDb)) {
+                return;
             }
             request.setAttribute("badPass", true);
         }
         request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+    private boolean choosePath(HttpServletRequest request, HttpServletResponse response, String pass, User userFromDb) throws ServletException, IOException {
+        if (SHA512SecureUtil.getSecurePassword(pass, userFromDb.getSalt()).equals(userFromDb.getPassword())) {
+            request.getSession().setAttribute("currentUser", userFromDb);
+            if (userFromDb.getRole().equals(Role.USER)) {
+                request.getRequestDispatcher("/goods").forward(request, response);
+                return true;
+            } else if (userFromDb.getRole().equals(Role.ADMIN)) {
+                request.getRequestDispatcher("/userControl").forward(request, response);
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

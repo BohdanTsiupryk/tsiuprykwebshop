@@ -23,7 +23,7 @@ public class DatabaseUserDao implements UserDao {
 
     @Override
     public boolean addUser(User user) {
-        String addSql = "INSERT INTO users (email,password,address,role, salt) VALUES (?,?,?,?,?)";
+        String addSql = "INSERT INTO users (email, password, address, role, salt) VALUES (?,?,?,?,?)";
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement statementAdd = connection.prepareStatement(addSql)) {
 
@@ -77,7 +77,7 @@ public class DatabaseUserDao implements UserDao {
 
     @Override
     public Optional<User> getUserById(long id) {
-        String getOneSql = "SELECT users.id,email,password,address,good,role_name,salt FROM users " +
+        String getOneSql = "SELECT users.id, email, password, address, good, role_name, salt FROM users " +
                 sqlInnerRole + "WHERE users.id = " + id;
 
         try (Connection connection = DbConnector.getConnection();
@@ -100,7 +100,7 @@ public class DatabaseUserDao implements UserDao {
 
     @Override
     public List<User> getUsers() {
-        String getAllSql = "SELECT users.id,email,password,address,role_name FROM users " + sqlInnerRole;
+        String getAllSql = "SELECT users.id, email, password, address, role_name FROM users " + sqlInnerRole;
         List<User> users = new ArrayList<>();
 
         try (Connection connection = DbConnector.getConnection();
@@ -141,7 +141,7 @@ public class DatabaseUserDao implements UserDao {
 
     @Override
     public Optional<User> containce(String email) {
-        String containceSql = "SELECT users.id,email,password,address,good,role_name,salt FROM users " + sqlInnerRole + " WHERE email = ?";
+        String containceSql = "SELECT users.id, email, password, address, good, role_name, salt FROM users " + sqlInnerRole + " WHERE email = ?";
 
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(containceSql)) {
