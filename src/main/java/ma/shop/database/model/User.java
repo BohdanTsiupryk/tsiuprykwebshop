@@ -1,11 +1,14 @@
 package ma.shop.database.model;
 
+import ma.shop.utils.RandomGenerator;
+
 import java.util.Objects;
 
 public class User {
     private long id;
     private String email;
     private String password;
+    private String salt;
     private String address;
     private int good;
     private Role role;
@@ -13,6 +16,7 @@ public class User {
     public User(String email, String password, String address, Role role) {
         this.email = email;
         this.password = password;
+        this.salt = RandomGenerator.randomSalt();
         this.address = address;
 
         if (role == null) {
@@ -21,13 +25,14 @@ public class User {
         this.role = role;
     }
 
-    public User(long id, String email, String password, String address, int good, Role role) {
+    public User(long id, String email, String password, String address, int good, Role role, String salt) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.address = address;
         this.good = good;
         this.role = role;
+        this.salt = salt;
     }
 
     public User(long id, String email, String password, String address, Role role) {
@@ -86,20 +91,26 @@ public class User {
         this.role = role;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
+                good == user.good &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
+                Objects.equals(salt, user.salt) &&
                 Objects.equals(address, user.address) &&
                 role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, address, role);
+        return Objects.hash(id, email, password, salt, address, good, role);
     }
 }

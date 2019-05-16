@@ -36,7 +36,6 @@ public class RegistrationServlet extends HttpServlet {
         } else {
             log.info("Try register user with email: " + email);
             try {
-
                 userDao.addUser(new User(email, password, address, Role.USER));
             } catch (NoSuchUserIdException e) {
                 log.info("Try register user with email: " + email);

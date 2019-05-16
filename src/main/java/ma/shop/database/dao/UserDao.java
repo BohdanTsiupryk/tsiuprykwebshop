@@ -12,7 +12,7 @@ public interface UserDao {
     Optional<User> getUserById(long id);
     List<User> getUsers();
     boolean updateUser(long id, User user);
-    Optional<User> containce(String email, String pass);
+    Optional<User> containce(String email);
     boolean containceEmail(String email);
     boolean addGood(Good good, User user);
     boolean removeGood(User user);

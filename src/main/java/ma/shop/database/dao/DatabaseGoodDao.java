@@ -18,7 +18,7 @@ public class DatabaseGoodDao implements GoodsDao {
 
     @Override
     public boolean addGood(Good good) {
-        String addSql = "INSERT INTO goods (name,description,price) VALUES (?,?,?)";
+        String addSql = "INSERT INTO goods (name, description, price) VALUES (?,?,?)";
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement statementAdd = connection.prepareStatement(addSql)) {
 
@@ -71,7 +71,7 @@ public class DatabaseGoodDao implements GoodsDao {
 
     @Override
     public Optional<Good> getGoodById(long id) {
-        String getOneSql = "SELECT id,name,description,price FROM goods WHERE id = " + id;
+        String getOneSql = "SELECT id, name, description, price FROM goods WHERE id = " + id;
 
         try (Connection connection = DbConnector.getConnection();
              Statement statementGetOne = connection.createStatement()) {

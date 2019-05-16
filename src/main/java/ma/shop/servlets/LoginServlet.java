@@ -4,6 +4,7 @@ import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
+import ma.shop.utils.SHA512SecureUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -23,20 +24,30 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String pass = request.getParameter("password");
 
-        Optional<User> optionalUser = userDao.containce(email, pass);
+        Optional<User> optionalUser = userDao.containce(email);
 
         if (optionalUser.isPresent()) {
             User userFromDb = optionalUser.get();
+            if (choosePath(request, response, pass, userFromDb)) {
+                return;
+            }
+            request.setAttribute("badPass", true);
+        }
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+
+    private boolean choosePath(HttpServletRequest request, HttpServletResponse response, String pass, User userFromDb) throws ServletException, IOException {
+        if (SHA512SecureUtil.getSecurePassword(pass, userFromDb.getSalt()).equals(userFromDb.getPassword())) {
             request.getSession().setAttribute("currentUser", userFromDb);
             if (userFromDb.getRole().equals(Role.USER)) {
                 request.getRequestDispatcher("/goods").forward(request, response);
-                return;
+                return true;
             } else if (userFromDb.getRole().equals(Role.ADMIN)) {
                 request.getRequestDispatcher("/userControl").forward(request, response);
-                return;
+                return true;
             }
         }
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        return false;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
