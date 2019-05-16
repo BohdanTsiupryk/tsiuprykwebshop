@@ -2,6 +2,7 @@ package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
+import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 @WebServlet(value = "/userControl")
 public class AdminServlet extends HttpServlet {
-    private UserDao userDao = new DatabaseUserDao();
+    private UserDao userDao = new UserHibernateDao();
     private static final Logger log = Logger.getLogger(AdminServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

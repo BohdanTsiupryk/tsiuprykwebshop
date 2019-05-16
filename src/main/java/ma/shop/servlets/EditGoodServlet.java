@@ -1,6 +1,7 @@
 package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseGoodDao;
+import ma.shop.database.dao.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
 import org.apache.log4j.Logger;
@@ -17,7 +18,7 @@ import java.util.List;
 @WebServlet(value = "/editGood")
 public class EditGoodServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(EditGoodServlet.class);
-    private static final GoodsDao goodDao = new DatabaseGoodDao();
+    private static final GoodsDao goodDao = new GoodHibernateDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long id = Long.valueOf(request.getParameter("edit"));

@@ -2,8 +2,10 @@ package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseGoodDao;
 import ma.shop.database.dao.DatabaseUserDao;
+import ma.shop.database.dao.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.dao.UserDao;
+import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.model.Good;
 import ma.shop.database.model.User;
 import ma.shop.service.MailService;
@@ -23,8 +25,8 @@ import java.util.Optional;
 @WebServlet(value = "/buy")
 public class PurchaseServlet extends HttpServlet {
     private Map<Long, String> codes = new HashMap<>();
-    private GoodsDao goodsDao = new DatabaseGoodDao();
-    private UserDao userDao = new DatabaseUserDao();
+    private GoodsDao goodsDao = new GoodHibernateDao();
+    private UserDao userDao = new UserHibernateDao();
     private static final Logger log = Logger.getLogger(PurchaseServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

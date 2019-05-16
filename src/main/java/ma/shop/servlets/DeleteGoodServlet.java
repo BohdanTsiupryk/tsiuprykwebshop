@@ -1,6 +1,7 @@
 package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseGoodDao;
+import ma.shop.database.dao.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
 import org.apache.log4j.Logger;
@@ -16,7 +17,7 @@ import java.util.List;
 @WebServlet(value = "/deleteGood")
 public class DeleteGoodServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(DeleteGoodServlet.class);
-    private static final GoodsDao goodDao = new DatabaseGoodDao();
+    private static final GoodsDao goodDao = new GoodHibernateDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

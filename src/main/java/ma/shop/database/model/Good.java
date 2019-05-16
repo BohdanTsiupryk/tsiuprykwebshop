@@ -1,12 +1,28 @@
 package ma.shop.database.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name = "goods")
 public class Good {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column
     private String name;
+    @Column
     private String description;
+    @Column
     private double price;
+
+    public Good() {
+    }
 
     public Good(String name, String description, double price) {
         this.name = name;

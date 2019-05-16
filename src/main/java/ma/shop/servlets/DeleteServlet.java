@@ -2,6 +2,7 @@ package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
+import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @WebServlet(value = "/delete")
 public class DeleteServlet extends HttpServlet {
     private static final Logger log = Logger.getLogger(DeleteServlet.class);
-    private static final UserDao userService = new DatabaseUserDao();
+    private static final UserDao userService = new UserHibernateDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String delete = request.getParameter("delete");

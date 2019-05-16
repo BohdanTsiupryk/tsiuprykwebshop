@@ -2,6 +2,7 @@ package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
+import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.exception.NoSuchUserIdException;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/registration")
 public class RegistrationServlet extends HttpServlet {
-    private UserDao userDao = new DatabaseUserDao();
+    private UserDao userDao = new UserHibernateDao();
     private static final Logger log = Logger.getLogger(RegistrationServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
