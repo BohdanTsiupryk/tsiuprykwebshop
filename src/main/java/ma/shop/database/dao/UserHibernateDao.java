@@ -18,7 +18,9 @@ public class UserHibernateDao implements UserDao {
     @Override
     public boolean addUser(User user) {
         user.setPassword(SHA512SecureUtil.getSecurePassword(user.getPassword(), user.getSalt()));
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(user);
         tx1.commit();
@@ -28,7 +30,9 @@ public class UserHibernateDao implements UserDao {
 
     @Override
     public boolean deleteUserById(long id) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession();
         Transaction tx1 = session.beginTransaction();
         User user = session.get(User.class, id);
         session.delete(user);
@@ -39,20 +43,29 @@ public class UserHibernateDao implements UserDao {
 
     @Override
     public Optional<User> getUserById(long id) {
-        User user = HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);
+        User user = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .get(User.class, id);
 
         return Optional.ofNullable(user);
     }
 
     @Override
     public List<User> getUsers() {
-        List<User> users = (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From User").list();
+        List<User> users = (List<User>) HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("From User")
+                .list();
         return users;
     }
 
     @Override
     public boolean updateUser(long id, User user) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession();
         Transaction tx1 = session.beginTransaction();
         session.update(user);
         tx1.commit();

@@ -18,17 +18,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column
+    @Column(name = "email")
     private String email;
-    @Column
+    @Column(name = "password")
     private String password;
-    @Column
+    @Column(name = "salt")
     private String salt;
-    @Column
+    @Column(name = "address")
     private String address;
-    @Column
+    @Column(name = "good")
     private int good;
-    @Column
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 

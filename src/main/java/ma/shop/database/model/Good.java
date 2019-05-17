@@ -14,11 +14,11 @@ public class Good {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column
+    @Column(name = "name")
     private String name;
-    @Column
+    @Column(name = "description")
     private String description;
-    @Column
+    @Column(name = "price")
     private double price;
 
     public Good() {
