@@ -77,7 +77,8 @@ public class UserHibernateDao implements UserDao {
     public Optional<User> containce(String email) {
         User user = (User) HibernateSessionFactoryUtil.getSessionFactory()
                 .openSession()
-                .createQuery("From User WHERE email = '" + email + "'")
+                .createQuery("From User WHERE email = :email")
+                .setParameter("email", email)
                 .uniqueResult();
 
         log.info(user.getEmail());

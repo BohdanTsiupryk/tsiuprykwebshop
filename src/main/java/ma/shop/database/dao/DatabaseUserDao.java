@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class DatabaseUserDao implements UserDao {
 
-    private static final Logger log = Logger.getLogger(DatabaseUserDao.class);
+    private static final Logger LOG = Logger.getLogger(DatabaseUserDao.class);
     private static String sqlInnerRole = "INNER JOIN roles ON role = roles.id ";
 
     @Override
@@ -27,8 +27,8 @@ public class DatabaseUserDao implements UserDao {
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement statementAdd = connection.prepareStatement(addSql)) {
 
-            log.debug("Add user sql: " + addSql);
-            log.debug("Try add user with email-" + user.getEmail());
+            LOG.debug("Add user sql: " + addSql);
+            LOG.debug("Try add user with email-" + user.getEmail());
 
             statementAdd.setString(1, user.getEmail());
             statementAdd.setString(2, SHA512SecureUtil.getSecurePassword(user.getPassword(), user.getSalt()));
@@ -37,14 +37,14 @@ public class DatabaseUserDao implements UserDao {
             statementAdd.setInt(4, user.getRole().getId());
 
             if (statementAdd.execute()) {
-                log.info("Successful add new user, email-" + user.getEmail());
+                LOG.info("Successful add new user, email-" + user.getEmail());
                 return true;
             } else {
-                log.info("No successful try to add user with the no unic email-" + user.getEmail());
+                LOG.info("No successful try to add user with the no unic email-" + user.getEmail());
                 return false;
             }
         } catch (SQLException e) {
-            log.error("Can't add user to DB", e);
+            LOG.error("Can't add user to DB", e);
         }
 
         return false;
@@ -59,18 +59,18 @@ public class DatabaseUserDao implements UserDao {
             int update = statementDelete.executeUpdate(deleteSql);
 
             if (update == 1) {
-                log.info("Successful delete user with id=" + id);
+                LOG.info("Successful delete user with id=" + id);
                 return true;
             } else if (update == 0) {
-                log.info("Cannot find user with id = " + id);
+                LOG.info("Cannot find user with id = " + id);
                 return false;
             } else if (update > 1) {
-                log.error("Multiply deleting !!!");
+                LOG.error("Multiply deleting !!!");
                 throw new SQLException("Multiply deleting !!!");
             }
 
         } catch (SQLException e) {
-            log.error("Cannot delete user. ", e);
+            LOG.error("Cannot delete user. ", e);
         }
         return false;
     }
@@ -89,11 +89,11 @@ public class DatabaseUserDao implements UserDao {
                 return getUser(resultSet);
 
             } else {
-                log.error("Cannot find user with id = " + id);
+                LOG.error("Cannot find user with id = " + id);
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            log.error("Cannot delete user. ", e);
+            LOG.error("Cannot delete user. ", e);
         }
         return Optional.empty();
     }
@@ -114,9 +114,9 @@ public class DatabaseUserDao implements UserDao {
                         Role.valueOf(resultSet.getString("role_name"))));
             }
         } catch (SQLException e) {
-            log.error("Cannot get users. ", e);
+            LOG.error("Cannot get users. ", e);
         }
-        log.debug("Get all users from db, size = " + users.size());
+        LOG.debug("Get all users from db, size = " + users.size());
         return users;
     }
 
@@ -134,7 +134,7 @@ public class DatabaseUserDao implements UserDao {
 
             if (updateQuery(statementUpdate, id)) return true;
         } catch (SQLException e) {
-            log.error("Cannot update user. ", e);
+            LOG.error("Cannot update user. ", e);
         }
         return false;
     }
@@ -149,15 +149,15 @@ public class DatabaseUserDao implements UserDao {
             preparedStatement.setString(1, email);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            log.debug("Check user with email-" + email);
+            LOG.debug("Check user with email-" + email);
 
             if (resultSet.next()) {
-                log.debug("User with email-" + email + " is EXIST");
+                LOG.debug("User with email-" + email + " is EXIST");
                 return getUser(resultSet);
             }
-            log.debug("User with email-" + email + " NOT EXIST");
+            LOG.debug("User with email-" + email + " NOT EXIST");
         } catch (SQLException e) {
-            log.error("Conteince exception", e);
+            LOG.error("Conteince exception", e);
         }
         return Optional.empty();
     }
@@ -184,15 +184,15 @@ public class DatabaseUserDao implements UserDao {
             preparedStatement.setString(1, email);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            log.debug("Check user with email-" + email);
+            LOG.debug("Check user with email-" + email);
 
             if (resultSet.next()) {
-                log.debug("User with email-" + email + " is EXIST");
+                LOG.debug("User with email-" + email + " is EXIST");
                 return true;
             }
-            log.debug("User with email-" + email + " not EXIST");
+            LOG.debug("User with email-" + email + " not EXIST");
         } catch (SQLException e) {
-            log.error("Conteince exception", e);
+            LOG.error("Conteince exception", e);
         }
         return false;
     }
@@ -211,7 +211,7 @@ public class DatabaseUserDao implements UserDao {
                 return true;
             }
         } catch (SQLException e) {
-            log.error("Cannot update user. ", e);
+            LOG.error("Cannot update user. ", e);
         }
         return false;
     }
@@ -220,12 +220,12 @@ public class DatabaseUserDao implements UserDao {
         int updateRow = statementUpdate.executeUpdate();
 
         if (updateRow == 1) {
-            log.info("Successful update user with id=" + id);
+            LOG.info("Successful update user with id=" + id);
             return true;
         } else if (updateRow == 0) {
-            log.info("Cannot find user with id=" + id);
+            LOG.info("Cannot find user with id=" + id);
         } else {
-            log.error("ERROR in sql syntex");
+            LOG.error("ERROR in sql syntex");
         }
         return false;
     }
@@ -241,7 +241,7 @@ public class DatabaseUserDao implements UserDao {
                 return true;
             }
         } catch (SQLException e) {
-            log.error("Cannot delete good. ", e);
+            LOG.error("Cannot delete good. ", e);
         }
         return false;
     }

@@ -1,6 +1,5 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
 import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.exception.NoSuchUserIdException;
@@ -18,7 +17,7 @@ import java.io.IOException;
 @WebServlet(value = "/registration")
 public class RegistrationServlet extends HttpServlet {
     private UserDao userDao = new UserHibernateDao();
-    private static final Logger log = Logger.getLogger(RegistrationServlet.class);
+    private static final Logger LOG = Logger.getLogger(RegistrationServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
@@ -31,19 +30,19 @@ public class RegistrationServlet extends HttpServlet {
         String address = request.getParameter("address");
 
         if (!password.equals(repassword)) {
-            log.info("Email: " + email + ", password and repassword not the same");
+            LOG.info("Email: " + email + ", password and repassword not the same");
             request.setAttribute("samePass", false);
             request.getRequestDispatcher("registration.jsp").forward(request, response);
         } else {
-            log.info("Try register user with email: " + email);
+            LOG.info("Try register user with email: " + email);
             try {
                 userDao.addUser(new User(email, password, address, Role.USER));
             } catch (NoSuchUserIdException e) {
-                log.info("Try register user with email: " + email);
+                LOG.info("Try register user with email: " + email);
                 request.setAttribute("message", "This login already exist");
                 request.getRequestDispatcher("info/information.jsp").forward(request, response);
             }
-            log.info("Success register user with email: " + email);
+            LOG.info("Success register user with email: " + email);
             request.setAttribute("successReg", "You successfully register");
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }

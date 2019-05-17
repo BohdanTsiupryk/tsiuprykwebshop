@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DatabaseGoodDao implements GoodsDao {
-    private static final Logger log = Logger.getLogger(DatabaseGoodDao.class);
+    private static final Logger LOG = Logger.getLogger(DatabaseGoodDao.class);
 
     @Override
     public boolean addGood(Good good) {
@@ -22,22 +22,22 @@ public class DatabaseGoodDao implements GoodsDao {
         try (Connection connection = DbConnector.getConnection();
              PreparedStatement statementAdd = connection.prepareStatement(addSql)) {
 
-            log.debug("Add good sql: " + addSql);
-            log.debug("Try add good with name-" + good.getName());
+            LOG.debug("Add good sql: " + addSql);
+            LOG.debug("Try add good with name-" + good.getName());
 
             statementAdd.setString(1, good.getName());
             statementAdd.setString(2, good.getDescription());
             statementAdd.setDouble(3, good.getPrice());
 
             if (statementAdd.execute()) {
-                log.info("Successful add new good, name-" + good.getName());
+                LOG.info("Successful add new good, name-" + good.getName());
                 return true;
             } else {
-                log.info("Fail to add good with name-" + good.getName());
+                LOG.info("Fail to add good with name-" + good.getName());
                 return false;
             }
         } catch (SQLException e) {
-            log.error("Can't add good to DB", e);
+            LOG.error("Can't add good to DB", e);
         }
 
         return false;
@@ -52,18 +52,18 @@ public class DatabaseGoodDao implements GoodsDao {
             int update = statementDelete.executeUpdate(deleteSql);
 
             if (update == 1) {
-                log.info("Successful delete good with id=" + id);
+                LOG.info("Successful delete good with id=" + id);
                 return true;
             } else if (update == 0) {
-                log.info("Cannot find good with id = " + id);
+                LOG.info("Cannot find good with id = " + id);
                 return false;
             } else if (update > 1) {
-                log.error("Multiply deleting !!!");
+                LOG.error("Multiply deleting !!!");
                 throw new SQLException("Multiply deleting !!!");
             }
 
         } catch (SQLException e) {
-            log.error("Cannot delete good. ", e);
+            LOG.error("Cannot delete good. ", e);
         }
         return false;
 
@@ -86,11 +86,11 @@ public class DatabaseGoodDao implements GoodsDao {
 
                 return Optional.of(new Good(resId, resName, resDescription, resDouble));
             } else {
-                log.error("Cannot find good with id = " + id);
+                LOG.error("Cannot find good with id = " + id);
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            log.error("Cannot delete good. ", e);
+            LOG.error("Cannot delete good. ", e);
         }
         return Optional.empty();    
     }
@@ -110,9 +110,9 @@ public class DatabaseGoodDao implements GoodsDao {
                         resultSet.getString("description"), resultSet.getDouble("price")));
             }
         } catch (SQLException e) {
-            log.error("Cannot delete good. ", e);
+            LOG.error("Cannot delete good. ", e);
         }
-        log.debug("Get all goods from db, size = " + goods.size());
+        LOG.debug("Get all goods from db, size = " + goods.size());
         return goods;
     }
 
@@ -130,15 +130,15 @@ public class DatabaseGoodDao implements GoodsDao {
             int updateRow = statementUpdate.executeUpdate();
 
             if (updateRow == 1) {
-                log.info("Successful update good with id=" + id);
+                LOG.info("Successful update good with id=" + id);
                 return true;
             } else if (updateRow == 0) {
-                log.info("Cannot find good with id=" + id);
+                LOG.info("Cannot find good with id=" + id);
             } else {
-                log.error("ERROR in sql syntex");
+                LOG.error("ERROR in sql syntex");
             }
         } catch (SQLException e) {
-            log.error("Cannot delete good. ", e);
+            LOG.error("Cannot delete good. ", e);
         }
         return false;
     }

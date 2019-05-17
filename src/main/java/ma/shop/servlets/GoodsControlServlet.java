@@ -16,7 +16,7 @@ import java.util.List;
 
 @WebServlet(value = "/goodsControl")
 public class GoodsControlServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(DeleteServlet.class);
+    private static final Logger LOG = Logger.getLogger(DeleteServlet.class);
     private GoodsDao goodsDao = new GoodHibernateDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class MailService {
-    private static final Logger log = Logger.getLogger(MailService.class);
+    private static final Logger LOG = Logger.getLogger(MailService.class);
 
     private static void sendMail(String email, String message) {
         final String username = "mabohdantsiupryk@gmail.com";
@@ -45,22 +45,22 @@ public class MailService {
 
             Transport.send(mimeMessage);
 
-            log.debug("Done");
+            LOG.debug("Done");
 
         } catch (MessagingException e) {
-            log.error("Can't send email", e);
+            LOG.error("Can't send email", e);
         }
     }
 
     public static void sendCode(String email, String code) {
         String message = "Your activation code = " + code;
-        log.info("Send email to " + email + ". Activation code = " + code);
+        LOG.info("Send email to " + email + ". Activation code = " + code);
         sendMail(email, message);
     }
 
     public static void sendGood(String email, Good good) {
         String message = String.format("Thank for buying!\nYour  product:\n%s", good.toString());
-        log.info("Send email to " + email + " good with name - " + good.getName());
+        LOG.info("Send email to " + email + " good with name - " + good.getName());
         sendMail(email, message);
     }
 }

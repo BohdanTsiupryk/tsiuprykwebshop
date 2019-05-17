@@ -1,7 +1,9 @@
 package ma.shop.filters;
 
+import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,6 +17,8 @@ import java.io.IOException;
 
 @WebFilter(value = {"/addGood", "/userControl", "/deleteGood", "/delete", "/editGood", "/goodsControl"})
 public class AdminFilter implements Filter {
+    private static final Logger LOG = Logger.getLogger(DatabaseUserDao.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 

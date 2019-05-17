@@ -27,7 +27,7 @@ public class PurchaseServlet extends HttpServlet {
     private Map<Long, String> codes = new HashMap<>();
     private GoodsDao goodsDao = new GoodHibernateDao();
     private UserDao userDao = new UserHibernateDao();
-    private static final Logger log = Logger.getLogger(PurchaseServlet.class);
+    private static final Logger LOG = Logger.getLogger(PurchaseServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String code = request.getParameter("code");
@@ -52,9 +52,10 @@ public class PurchaseServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("currentUser");
 
         Optional<Good> goodById = goodsDao.getGoodById(Long.parseLong(request.getParameter("buyId")));
-
         if (goodById.isPresent()) {
             userDao.addGood(goodById.get(), user);
+            LOG.debug("User " + user.getEmail() + " try buy good with id=" + goodById.get().getId());
+
             codes.put(user.getId(), code);
 
             MailService.sendCode(user.getEmail(), code);

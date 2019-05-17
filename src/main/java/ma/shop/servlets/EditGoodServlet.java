@@ -1,6 +1,5 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseGoodDao;
 import ma.shop.database.dao.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
@@ -17,16 +16,16 @@ import java.util.List;
 
 @WebServlet(value = "/editGood")
 public class EditGoodServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(EditGoodServlet.class);
+    private static final Logger LOG = Logger.getLogger(EditGoodServlet.class);
     private static final GoodsDao goodDao = new GoodHibernateDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long id = Long.valueOf(request.getParameter("edit"));
         Good good = goodDao.getGoodById(id).get();
-        log.debug("Get good with name: " + good.getName());
+        LOG.debug("Get good with name: " + good.getName());
 
         request.setAttribute("good", good);
-        log.debug("Send good:" + good.getName() +" to view");
+        LOG.debug("Send good:" + good.getName() +" to view");
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("editGood.jsp");
         dispatcher.forward(request, response);
@@ -40,7 +39,7 @@ public class EditGoodServlet extends HttpServlet {
         double price = Double.valueOf(req.getParameter("price"));
 
         if (goodDao.updateGood(id, new Good(name, description, price))) {
-            log.debug("Good with id: " + id + ", change information");
+            LOG.debug("Good with id: " + id + ", change information");
         }
         List<Good> goods = goodDao.getGoods();
         req.setAttribute("goods", goods);

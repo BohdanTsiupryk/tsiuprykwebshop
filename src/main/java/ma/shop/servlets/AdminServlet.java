@@ -17,7 +17,7 @@ import java.util.List;
 @WebServlet(value = "/userControl")
 public class AdminServlet extends HttpServlet {
     private UserDao userDao = new UserHibernateDao();
-    private static final Logger log = Logger.getLogger(AdminServlet.class);
+    private static final Logger LOG = Logger.getLogger(AdminServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);

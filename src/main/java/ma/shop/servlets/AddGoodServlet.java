@@ -1,6 +1,5 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseGoodDao;
 import ma.shop.database.dao.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @WebServlet(value = "/addGood")
 public class AddGoodServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(AddGoodServlet.class);
+    private static final Logger LOG = Logger.getLogger(AddGoodServlet.class);
     private GoodsDao goodsDao = new GoodHibernateDao();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,12 +24,12 @@ public class AddGoodServlet extends HttpServlet {
         double price = Double.parseDouble(request.getParameter("price"));
 
         if (goodsDao.addGood(new Good(name, description, price))) {
-            log.info("Add good with name - " + name);
+            LOG.info("Add good with name - " + name);
         } else {
-            log.error("Cant add good with name - " + name);
+            LOG.error("Cant add good with name - " + name);
         }
         List<Good> goods = goodsDao.getGoods();
-        log.debug("Get goods, count: " + goods.size());
+        LOG.debug("Get goods, count: " + goods.size());
         request.setAttribute("goods", goods);
 
         request.getRequestDispatcher("/goodsControl.jsp").forward(request, response);
