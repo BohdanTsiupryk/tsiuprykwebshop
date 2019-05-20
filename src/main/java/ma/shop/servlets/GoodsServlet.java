@@ -1,6 +1,7 @@
 package ma.shop.servlets;
 
 import ma.shop.database.dao.DatabaseGoodDao;
+import ma.shop.database.dao.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/goods")
 public class GoodsServlet extends HttpServlet {
-    private GoodsDao goodsDao = new DatabaseGoodDao();
+    private GoodsDao goodsDao = new GoodHibernateDao();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);

@@ -1,7 +1,7 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
+import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
 import ma.shop.utils.SHA512SecureUtil;
@@ -17,8 +17,8 @@ import java.util.Optional;
 
 @WebServlet(value = "/login")
 public class LoginServlet extends HttpServlet {
-    private UserDao userDao = new DatabaseUserDao();
-    private static final Logger log = Logger.getLogger(LoginServlet.class);
+    private UserDao userDao = new UserHibernateDao();
+    private static final Logger LOG = Logger.getLogger(LoginServlet.class);
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
 
         if (optionalUser.isPresent()) {
             User userFromDb = optionalUser.get();
+            LOG.info(userFromDb.getEmail());
             if (choosePath(request, response, pass, userFromDb)) {
                 return;
             }

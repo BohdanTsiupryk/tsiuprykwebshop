@@ -1,7 +1,7 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
+import ma.shop.database.dao.UserHibernateDao;
 import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
 
@@ -15,20 +15,20 @@ import java.util.List;
 
 @WebServlet(value = "/delete")
 public class DeleteServlet extends HttpServlet {
-    private static final Logger log = Logger.getLogger(DeleteServlet.class);
-    private static final UserDao userService = new DatabaseUserDao();
+    private static final Logger LOG = Logger.getLogger(DeleteServlet.class);
+    private static final UserDao userService = new UserHibernateDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String delete = request.getParameter("delete");
         long deleteId = Long.valueOf(delete);
 
-        log.debug("Try delete user with id: " + deleteId);
+        LOG.debug("Try delete user with id: " + deleteId);
         if (userService.deleteUserById(deleteId)) {
-            log.debug("Successful deleted id: " + deleteId);
+            LOG.debug("Successful deleted id: " + deleteId);
         }
 
         List<User> users = userService.getUsers();
-        log.debug("Get users, count: " + users.size());
+        LOG.debug("Get users, count: " + users.size());
         request.setAttribute("users", users);
 
         request.getRequestDispatcher("userControl.jsp").forward(request, response);

@@ -2,16 +2,38 @@ package ma.shop.database.model;
 
 import ma.shop.utils.RandomGenerator;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
+    @Column(name = "salt")
     private String salt;
+    @Column(name = "address")
     private String address;
+    @Column(name = "good")
     private int good;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User() {
+    }
 
     public User(String email, String password, String address, Role role) {
         this.email = email;
