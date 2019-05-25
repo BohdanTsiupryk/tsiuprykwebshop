@@ -1,6 +1,6 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.GoodHibernateDao;
+import ma.shop.database.dao.impl.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
 import org.apache.log4j.Logger;
@@ -24,11 +24,11 @@ public class DeleteGoodServlet extends HttpServlet {
         long deleteId = Long.valueOf(delete);
 
         LOG.debug("Try delete good with id: " + deleteId);
-        if (goodDao.deleteGoodById(deleteId)) {
+        if (goodDao.deleteById(deleteId)) {
             LOG.debug("Successful deleted id: " + deleteId);
         }
 
-        List<Good> goods = goodDao.getGoods();
+        List<Good> goods = goodDao.getAll();
         LOG.debug("Get goods, count: " + goods.size());
         req.setAttribute("goods", goods);
 

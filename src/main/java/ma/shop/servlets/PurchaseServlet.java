@@ -1,12 +1,10 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseGoodDao;
-import ma.shop.database.dao.DatabaseUserDao;
-import ma.shop.database.dao.GoodHibernateDao;
+import ma.shop.database.dao.impl.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.dao.UserDao;
-import ma.shop.database.dao.UserHibernateDao;
-import ma.shop.database.model.Good;
+import ma.shop.database.dao.impl.UserHibernateDao;
+import ma.shop.database.model.Order;
 import ma.shop.database.model.User;
 import ma.shop.service.MailService;
 import ma.shop.utils.RandomGenerator;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @WebServlet(value = "/buy")
 public class PurchaseServlet extends HttpServlet {
@@ -35,15 +32,15 @@ public class PurchaseServlet extends HttpServlet {
 
         String codeFromMap = codes.get(user.getId());
         request.setAttribute("userEmail", user.getEmail());
-        int good = userDao.getUserById(user.getId()).get().getGood();
+        Order order = userDao.getById(user.getId()).get().getOrder();
 
         if (code.equals(codeFromMap)) {
-            MailService.sendGood(user.getEmail(), goodsDao.getGoodById(good).get());
+            MailService.sendGood(user.getEmail(), order.getGoods());
             request.setAttribute("message", "Goods send to your email:" + user.getEmail());
         } else {
             request.setAttribute("message", "Bad confrimation code!");
         }
-        userDao.removeGood(user);
+        userDao.clearOrder(user);
         request.getRequestDispatcher("information.jsp").forward(request, response);
     }
 
@@ -51,16 +48,10 @@ public class PurchaseServlet extends HttpServlet {
         String code = RandomGenerator.randomCode();
         User user = (User) request.getSession().getAttribute("currentUser");
 
-        Optional<Good> goodById = goodsDao.getGoodById(Long.parseLong(request.getParameter("buyId")));
-        if (goodById.isPresent()) {
-            userDao.addGood(goodById.get(), user);
-            LOG.debug("User " + user.getEmail() + " try buy good with id=" + goodById.get().getId());
+        codes.put(user.getId(), code);
 
-            codes.put(user.getId(), code);
+        MailService.sendCode(user.getEmail(), code);
 
-            MailService.sendCode(user.getEmail(), code);
-
-            request.getRequestDispatcher("codeConfrimingPage.jsp").forward(request, response);
-        }
+        request.getRequestDispatcher("codeConfrimingPage.jsp").forward(request, response);
     }
 }

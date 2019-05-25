@@ -1,7 +1,9 @@
 package ma.shop.database.model;
 
 import ma.shop.utils.RandomGenerator;
+import ma.shop.utils.SHA512SecureUtil;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,8 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -26,8 +29,9 @@ public class User {
     private String salt;
     @Column(name = "address")
     private String address;
-    @Column(name = "good")
-    private int good;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -37,22 +41,23 @@ public class User {
 
     public User(String email, String password, String address, Role role) {
         this.email = email;
-        this.password = password;
         this.salt = RandomGenerator.randomSalt();
+        this.password = SHA512SecureUtil.getSecurePassword(password, this.salt);
         this.address = address;
-
+        this.order = new Order(this);
         if (role == null) {
-            role = Role.USER;
+            this.role = Role.USER;
+        } else {
+            this.role = role;
         }
-        this.role = role;
     }
 
-    public User(long id, String email, String password, String address, int good, Role role, String salt) {
+    public User(long id, String email, String password, String address, Order order, Role role, String salt) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.address = address;
-        this.good = good;
+        this.order = order;
         this.role = role;
         this.salt = salt;
     }
@@ -101,12 +106,16 @@ public class User {
         return role;
     }
 
-    public int getGood() {
-        return good;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public void setGood(int good) {
-        this.good = good;
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public void setRole(Role role) {
@@ -117,22 +126,4 @@ public class User {
         return salt;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id &&
-                good == user.good &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(salt, user.salt) &&
-                Objects.equals(address, user.address) &&
-                role == user.role;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, password, salt, address, good, role);
-    }
 }

@@ -1,7 +1,7 @@
 package ma.shop.servlets;
 
 import ma.shop.database.dao.UserDao;
-import ma.shop.database.dao.UserHibernateDao;
+import ma.shop.database.dao.impl.UserHibernateDao;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
 import ma.shop.utils.SHA512SecureUtil;

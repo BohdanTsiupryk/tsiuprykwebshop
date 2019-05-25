@@ -1,7 +1,6 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseGoodDao;
-import ma.shop.database.dao.GoodHibernateDao;
+import ma.shop.database.dao.impl.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
 import org.apache.log4j.Logger;
@@ -20,7 +19,7 @@ public class GoodsControlServlet extends HttpServlet {
     private GoodsDao goodsDao = new GoodHibernateDao();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Good> goods = goodsDao.getGoods();
+        List<Good> goods = goodsDao.getAll();
         request.setAttribute("goods", goods);
         request.getRequestDispatcher("goodsControl.jsp").forward(request, response);
     }

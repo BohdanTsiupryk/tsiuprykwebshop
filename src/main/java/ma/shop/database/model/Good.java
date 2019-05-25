@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "goods")
@@ -20,6 +24,11 @@ public class Good {
     private String description;
     @Column(name = "price")
     private double price;
+    @ManyToMany
+    @JoinTable(name="order_good",
+            joinColumns=@JoinColumn(name="good_id"),
+            inverseJoinColumns=@JoinColumn(name="order_id"))
+    private Set<Order> orders;
 
     public Good() {
     }
@@ -35,6 +44,14 @@ public class Good {
         this.name = name;
         this.description = description;
         this.price = price;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     public long getId() {
@@ -74,23 +91,11 @@ public class Good {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Good good = (Good) o;
-        return id == good.id &&
-                Double.compare(good.price, price) == 0 &&
-                Objects.equals(name, good.name) &&
-                Objects.equals(description, good.description);
+        return id == good.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price);
-    }
-
-    @Override
-    public String toString() {
-        return "Good{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
+        return Objects.hash(id);
     }
 }

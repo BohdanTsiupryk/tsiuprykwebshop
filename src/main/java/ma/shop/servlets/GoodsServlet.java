@@ -1,7 +1,6 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseGoodDao;
-import ma.shop.database.dao.GoodHibernateDao;
+import ma.shop.database.dao.impl.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 
 import javax.servlet.ServletException;
@@ -20,7 +19,8 @@ public class GoodsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("goods", goodsDao.getGoods());
+        request.setAttribute("currentUser", request.getSession().getAttribute("currentUser"));
+        request.setAttribute("goods", goodsDao.getAll());
 
         request.getRequestDispatcher("goods.jsp").forward(request, response);
     }
