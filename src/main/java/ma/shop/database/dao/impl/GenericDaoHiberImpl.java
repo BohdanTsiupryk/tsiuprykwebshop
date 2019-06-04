@@ -94,8 +94,11 @@ public class GenericDaoHiberImpl<T> implements GenericDao<T> {
             Transaction transaction = session.beginTransaction();
             session.update(object);
             transaction.commit();
+
+            logger.debug("Update " + clazz.getCanonicalName());
             return true;
         } catch (Exception e) {
+            logger.error("Error update" + clazz.getCanonicalName(), e);
             return false;
         }
     }
