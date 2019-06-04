@@ -18,12 +18,16 @@ public class Good {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "price")
     private double price;
+
     @ManyToMany
     @JoinTable(name="order_good",
             joinColumns=@JoinColumn(name="good_id"),

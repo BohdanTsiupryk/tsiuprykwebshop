@@ -21,8 +21,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @OneToOne(mappedBy = "order")
     private User user;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "order_good",
             joinColumns = @JoinColumn(name = "order_id"),

@@ -21,17 +21,23 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "password")
     private String password;
+
     @Column(name = "salt")
     private String salt;
+
     @Column(name = "address")
     private String address;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
+
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
