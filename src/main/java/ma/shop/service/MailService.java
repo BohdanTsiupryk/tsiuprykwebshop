@@ -11,7 +11,9 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 public class MailService {
     private static final Logger LOG = Logger.getLogger(MailService.class);
@@ -58,9 +60,9 @@ public class MailService {
         sendMail(email, message);
     }
 
-    public static void sendGood(String email, Good good) {
+    public static void sendGood(String email, List<Good> good) {
         String message = String.format("Thank for buying!\nYour  product:\n%s", good.toString());
-        LOG.info("Send email to " + email + " good with name - " + good.getName());
+        LOG.info("Send email to " + email + " goods - " + good.toString());
         sendMail(email, message);
     }
 }

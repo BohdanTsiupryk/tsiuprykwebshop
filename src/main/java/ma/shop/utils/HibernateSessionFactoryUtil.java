@@ -1,6 +1,7 @@
 package ma.shop.utils;
 
 import ma.shop.database.model.Good;
+import ma.shop.database.model.Order;
 import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -22,6 +23,7 @@ public class HibernateSessionFactoryUtil {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Good.class);
+                configuration.addAnnotatedClass(Order.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
 

@@ -1,6 +1,6 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.GoodHibernateDao;
+import ma.shop.database.dao.impl.GoodHibernateDao;
 import ma.shop.database.dao.GoodsDao;
 import ma.shop.database.model.Good;
 import org.apache.log4j.Logger;
@@ -23,12 +23,12 @@ public class AddGoodServlet extends HttpServlet {
         String description = request.getParameter("description");
         double price = Double.parseDouble(request.getParameter("price"));
 
-        if (goodsDao.addGood(new Good(name, description, price))) {
+        if (goodsDao.add(new Good(name, description, price))) {
             LOG.info("Add good with name - " + name);
         } else {
             LOG.error("Cant add good with name - " + name);
         }
-        List<Good> goods = goodsDao.getGoods();
+        List<Good> goods = goodsDao.getAll();
         LOG.debug("Get goods, count: " + goods.size());
         request.setAttribute("goods", goods);
 

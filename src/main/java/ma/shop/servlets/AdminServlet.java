@@ -1,8 +1,7 @@
 package ma.shop.servlets;
 
-import ma.shop.database.dao.DatabaseUserDao;
 import ma.shop.database.dao.UserDao;
-import ma.shop.database.dao.UserHibernateDao;
+import ma.shop.database.dao.impl.UserHibernateDao;
 import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
 
@@ -24,7 +23,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<User> users = userDao.getUsers();
+        List<User> users = userDao.getAll();
         users.sort((o1, o2) -> (int) (o1.getId() - o2.getId()));
         request.setAttribute("users", users);
         request.getRequestDispatcher("userControl.jsp").forward(request, response);

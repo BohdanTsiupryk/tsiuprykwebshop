@@ -15,6 +15,9 @@
 <form action="/profile" accept-charset="UTF-8">
     <button>My Profile</button>
 </form>
+<form action="/buy" accept-charset="UTF-8">
+    <button>Pay all ${currentUser.getOrder().getAllPrice()}$</button>
+</form>
 <br>
 <table>
     <tr>
@@ -29,8 +32,8 @@
             <td>${good.getPrice()}</td>
             <td>${good.getDescription()}</td>
             <td>
-                <form action="/buy" accept-charset="UTF-8">
-                    <button value="${good.getId()}" name="buyId">Buy</button>
+                <form action="/stash" accept-charset="UTF-8">
+                    <button value="${good.getId()}" name="buyId">Add to stash</button>
                 </form>
             </td>
         </tr>

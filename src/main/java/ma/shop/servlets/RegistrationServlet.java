@@ -1,7 +1,7 @@
 package ma.shop.servlets;
 
 import ma.shop.database.dao.UserDao;
-import ma.shop.database.dao.UserHibernateDao;
+import ma.shop.database.dao.impl.UserHibernateDao;
 import ma.shop.database.exception.NoSuchUserIdException;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
@@ -36,7 +36,7 @@ public class RegistrationServlet extends HttpServlet {
         } else {
             LOG.info("Try register user with email: " + email);
             try {
-                userDao.addUser(new User(email, password, address, Role.USER));
+                userDao.add(new User(email, password, address, Role.USER));
             } catch (NoSuchUserIdException e) {
                 LOG.info("Try register user with email: " + email);
                 request.setAttribute("message", "This login already exist");

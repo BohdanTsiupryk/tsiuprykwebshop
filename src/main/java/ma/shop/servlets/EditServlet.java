@@ -1,7 +1,7 @@
 package ma.shop.servlets;
 
 import ma.shop.database.dao.UserDao;
-import ma.shop.database.dao.UserHibernateDao;
+import ma.shop.database.dao.impl.UserHibernateDao;
 import ma.shop.database.model.Role;
 import ma.shop.database.model.User;
 import org.apache.log4j.Logger;
@@ -22,7 +22,7 @@ public class EditServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long id = Long.valueOf(request.getParameter("edit"));
-        User user = userService.getUserById(id).get();
+        User user = userService.getById(id).get();
         User userSession = (User) request.getSession().getAttribute("currentUser");
         LOG.debug("Get user with email: " + user.getEmail());
 
@@ -42,20 +42,20 @@ public class EditServlet extends HttpServlet {
         String address = req.getParameter("address");
         Role role = req.getParameter("role") == null ? Role.USER : Role.valueOf(req.getParameter("role"));
 
-        if (userService.updateUser(id, new User(email, password, address,role))) {
+        if (userService.update(new User(email, password, address,role))) {
             LOG.debug("User with id: " + id + ", change information");
         }
 
         User user = (User) req.getSession().getAttribute("currentUser");
 
         if (user.getRole().equals(Role.ADMIN)) {
-            List<User> users = userService.getUsers();
+            List<User> users = userService.getAll();
             LOG.debug("Get users, count: " + users.size());
             req.setAttribute("users", users);
             req.getRequestDispatcher("admin/userControl.jsp").forward(req, resp);
         }
 
-        User userFromDB = userService.getUserById(id).get();
+        User userFromDB = userService.getById(id).get();
         req.setAttribute("user", userFromDB);
 
         req.getRequestDispatcher("userProfile.jsp").forward(req, resp);
